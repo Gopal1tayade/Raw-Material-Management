@@ -1,0 +1,180 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  updatedAt         DateTime @default(now()) @map(name: "updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String   
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  address       Address?
+
+  accounts  Account[]
+  sessions  Session[]
+  tasks     Task[]
+  expenses  Expense[]
+  processes Process[]
+  products  Product[]
+
+  @@map(name: "users")
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  street     String
+  city       String
+  state      String
+  postalCode String
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now()) @map(name: "created_at")
+  updatedAt  DateTime @default(now()) @map(name: "updated_at")
+
+  @@map("addresses")
+}
+
+model Product {
+  id             String    @id @default(cuid())
+  name           String
+  description    String?
+  color          String?
+  weight         Float?
+  unit           String
+  cost           Float?
+  expirationDate DateTime? @map(name: "expiration_at")
+  productionDate DateTime? @map(name: "production_at")
+  isHazardous    Boolean?
+  isRecyclable   Boolean?
+  isOrganic      Boolean?
+  userId         String    
+  user           User      @relation(fields: [userId], references: [id])
+  createdAt      DateTime  @default(now()) @map(name: "created_at")
+  updatedAt      DateTime  @default(now()) @map(name: "updated_at")
+  tasks          Task[]
+  Process        Process[]
+
+  @@map(name: "products")
+}
+
+enum Statuses {
+  TODO
+  DONE
+  IN_PROGRESS
+  CANCELED
+}
+
+enum Priorities {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  description String
+  scheduledAt DateTime
+  status      Statuses   @default(TODO)
+  priority    Priorities @default(LOW)
+  notes       String?
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @default(now()) @map(name: "updated_at")
+  userId      String     
+  user        User       @relation(fields: [userId], references: [id])
+  productId   String     
+  product     Product    @relation(fields: [productId], references: [id])
+
+  @@map("tasks")
+}
+
+enum ExpenseCategory {
+  SUPPLIES
+  LABOR
+  EQUIPMENT
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+}
+
+model Expense {
+  id            String          @id @default(cuid())
+  description   String
+  amount        Float
+  date          DateTime
+  category      ExpenseCategory @default(LABOR)
+  PaymentStatus PaymentStatus   @default(PENDING)
+  notes         String?
+  userId        String          
+  user          User            @relation(fields: [userId], references: [id])
+  processId     String          @unique 
+  process       Process         @relation(fields: [processId], references: [id])
+  createdAt     DateTime        @default(now()) @map(name: "created_at")
+  updatedAt     DateTime        @default(now()) @map(name: "updated_at")
+
+  @@map("expenses")
+}
+
+model Process {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  duration    Int?
+  temperature Float?
+  humidity    Float?
+  pressure    Float?
+  startDate   DateTime?
+  status      String?
+  productId   String    
+  product     Product   @relation(fields: [productId], references: [id])
+  userId      String    
+  user        User      @relation(fields: [userId], references: [id])
+  expense     Expense?
+  createdAt   DateTime  @default(now()) @map(name: "created_at")
+  updatedAt   DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map("processes")
+}
