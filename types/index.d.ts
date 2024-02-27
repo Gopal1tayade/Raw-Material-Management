@@ -65,3 +65,9 @@ export type DashboardConfig = {
   mainNav: MainNavItem[];
   sidebarNav: SidebarNavItem[];
 };
+
+export interface DataTableExtendedProp {
+  title: string;
+  filterKey: "name" | "email" | "label";
+  icon: keyof typeof Icons;
+}

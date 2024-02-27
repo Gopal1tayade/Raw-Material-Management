@@ -31,6 +31,10 @@ import {
   Save,
   PlayCircle,
   Minus,
+  Calendar,
+  Palette,
+  Ruler,
+  MoreHorizontal,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -84,7 +88,11 @@ export const Icons = {
   overview: Kanban,
   rupee: IndianRupee,
   save: Save,
+  calendar: Calendar,
   playCircle: PlayCircle,
+  palette: Palette,
+  ruler: Ruler,
+  more: MoreHorizontal,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

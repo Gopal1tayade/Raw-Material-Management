@@ -19,9 +19,14 @@ export const dashboardConfig: DashboardConfig = {
       icon: "overview",
     },
     {
-      title: "Products",
-      href: "/dashboard/products",
-      icon: "product",
+      title: "Colors",
+      href: "/dashboard/colors",
+      icon: "palette",
+    },
+    {
+      title: "Units",
+      href: "/dashboard/units",
+      icon: "ruler",
     },
     {
       title: "Tasks",

@@ -10,6 +10,9 @@ import { DashboardHeader } from "@/components/header";
 import { DashboardShell } from "@/components/shell";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
 
 export const metadata = {
   title: "Settings",
@@ -37,7 +40,11 @@ export default async function SettingsPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Tasks" text="Manage and create tasks." />
+      <DashboardHeader heading="Tasks" text="Manage and create tasks.">
+        <Link href="/dashboard/tasks/new" className={buttonVariants()}>
+          <Icons.add className="mr-2 h-4 w-4" /> Create New
+        </Link>
+      </DashboardHeader>
       <div className="grid gap-10">
         <DataTable data={tasks} columns={columns} />
       </div>

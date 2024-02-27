@@ -35,7 +35,7 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String   
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -58,6 +58,7 @@ model User {
   expenses  Expense[]
   processes Process[]
   products  Product[]
+  colors    Color[]
 
   @@map(name: "users")
 }
@@ -80,7 +81,6 @@ model Product {
   id             String    @id @default(cuid())
   name           String
   description    String?
-  color          String?
   weight         Float?
   unit           String
   cost           Float?
@@ -89,12 +89,14 @@ model Product {
   isHazardous    Boolean?
   isRecyclable   Boolean?
   isOrganic      Boolean?
-  userId         String    
+  userId         String
   user           User      @relation(fields: [userId], references: [id])
   createdAt      DateTime  @default(now()) @map(name: "created_at")
   updatedAt      DateTime  @default(now()) @map(name: "updated_at")
   tasks          Task[]
   Process        Process[]
+  colorId        String?
+  color          Color?    @relation(fields: [colorId], references: [id])
 
   @@map(name: "products")
 }
@@ -115,18 +117,31 @@ enum Priorities {
 model Task {
   id          String     @id @default(cuid())
   description String
-  scheduledAt DateTime
+  scheduledAt DateTime   @default(now()) @map(name: "scheduled_at")
   status      Statuses   @default(TODO)
   priority    Priorities @default(LOW)
   notes       String?
   createdAt   DateTime   @default(now()) @map(name: "created_at")
   updatedAt   DateTime   @default(now()) @map(name: "updated_at")
-  userId      String     
+  userId      String
   user        User       @relation(fields: [userId], references: [id])
-  productId   String     
+  productId   String
   product     Product    @relation(fields: [productId], references: [id])
 
   @@map("tasks")
+}
+
+model Color {
+  id        String    @id @default(cuid())
+  name      String
+  value     String
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  products  Product[]
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map("colors")
 }
 
 enum ExpenseCategory {
@@ -148,9 +163,9 @@ model Expense {
   category      ExpenseCategory @default(LABOR)
   PaymentStatus PaymentStatus   @default(PENDING)
   notes         String?
-  userId        String          
+  userId        String
   user          User            @relation(fields: [userId], references: [id])
-  processId     String          @unique 
+  processId     String          @unique
   process       Process         @relation(fields: [processId], references: [id])
   createdAt     DateTime        @default(now()) @map(name: "created_at")
   updatedAt     DateTime        @default(now()) @map(name: "updated_at")
@@ -168,9 +183,9 @@ model Process {
   pressure    Float?
   startDate   DateTime?
   status      String?
-  productId   String    
+  productId   String
   product     Product   @relation(fields: [productId], references: [id])
-  userId      String    
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
   expense     Expense?
   createdAt   DateTime  @default(now()) @map(name: "created_at")
