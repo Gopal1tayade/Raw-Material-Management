@@ -34,6 +34,16 @@ export const dashboardConfig: DashboardConfig = {
       icon: "task",
     },
     {
+      title: "Processes",
+      href: "/dashboard/processes",
+      icon: "process",
+    },
+    {
+      title: "Expenses",
+      href: "/dashboard/expenses",
+      icon: "wallet",
+    },
+    {
       title: "Settings",
       href: "/dashboard/settings",
       icon: "settings",

@@ -23,10 +23,9 @@ import { Icons } from "@/components/icons";
 
 type ColorFormProps = {
   color: Color | null;
-  storeId: string;
 };
 
-export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
+export const ColorForm: React.FC<ColorFormProps> = ({ color }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -41,7 +40,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
   async function onSubmit(values: z.infer<typeof colorSchema>) {
     setIsLoading(true);
 
-    const response = await fetch(`/api/${storeId}/colors`, {
+    const response = await fetch(`/api/colors`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

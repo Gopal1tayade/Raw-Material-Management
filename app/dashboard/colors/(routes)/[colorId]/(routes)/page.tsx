@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/shell";
 import { db } from "@/lib/db";
 import { ColorForm } from "../_components/form";
 import { Icons } from "@/components/icons";
+import { ColorRemoveButton } from "../../../_components/remove-button";
 
 export const metadata = {
   title: "Color",
@@ -13,7 +14,6 @@ export const metadata = {
 
 interface ColorPageProps {
   params: {
-    storeId: string;
     colorId: string;
   };
 }
@@ -38,19 +38,17 @@ const ColorPage: React.FC<ColorPageProps> = async ({ params }) => {
         text="Color: Effortlessly customize and manage your color choices here."
       >
         {params.colorId !== "new" && (
-          //   <ColorDeleteButton
-          //     storeId={params.storeId}
-          //     colorId={params.colorId}
-          //     variant="destructive"
-          //     size="icon"
-          //   >
-          //     <Icons.trash />
-          //   </ColorDeleteButton>
-          <h1>D B</h1>
+          <ColorRemoveButton
+            colorId={params.colorId}
+            variant="destructive"
+            size="icon"
+          >
+            <Icons.trash />
+          </ColorRemoveButton>
         )}
       </DashboardHeader>
       <div className="grid gap-10">
-        <ColorForm color={color} storeId={params.storeId} />
+        <ColorForm color={color} />
       </div>
     </DashboardShell>
   );

@@ -35,6 +35,10 @@ import {
   Palette,
   Ruler,
   MoreHorizontal,
+  Copy,
+  SquarePen,
+  PackageSearch,
+  Wallet,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -93,6 +97,10 @@ export const Icons = {
   palette: Palette,
   ruler: Ruler,
   more: MoreHorizontal,
+  copy: Copy,
+  edit: SquarePen,
+  process: PackageSearch,
+  wallet: Wallet,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

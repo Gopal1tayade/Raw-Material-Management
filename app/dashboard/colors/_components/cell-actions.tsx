@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SizeColumn } from "./columns";
+import { ColorRemoveButton } from "./remove-button";
 
 type ColorCellActionsProps = {
   data: SizeColumn;
@@ -33,7 +34,7 @@ const ColorCellActions: React.FC<ColorCellActionsProps> = ({ data }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        {/* <DropdownMenuItem
+        <DropdownMenuItem
           onClick={() => navigator.clipboard.writeText(data.id)}
         >
           <Icons.copy className="h-4 w-4 mr-2" />
@@ -41,7 +42,7 @@ const ColorCellActions: React.FC<ColorCellActionsProps> = ({ data }) => {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            router.push(`/${params.storeId}/colors/${data.id}`);
+            router.push(`/dashboard/colors/${data.id}`);
           }}
         >
           <Icons.edit className="h-4 w-4 mr-2" />
@@ -49,15 +50,11 @@ const ColorCellActions: React.FC<ColorCellActionsProps> = ({ data }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <ColorDeleteButton
-            storeId={params.storeId}
-            colorId={data.id}
-            variant="ghost"
-          >
+          <ColorRemoveButton colorId={data.id} variant="ghost">
             <Icons.trash className="h-4 w-4 mr-2" />
             Delete
-          </ColorDeleteButton>
-        </DropdownMenuItem> */}
+          </ColorRemoveButton>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
