@@ -20,7 +20,7 @@ export const ColorClient: React.FC<ColorClientProps> = ({ colors }) => {
   return (
     <DashboardShell>
       <DashboardHeader heading="Colors" text="Tailor your colors effortlessly.">
-        <Button onClick={() => router.push(`/${params.storeId}/colors/new`)}>
+        <Button onClick={() => router.push(`/dashboard/colors/new`)}>
           <Icons.add className="h-4 w-4 mr-2" />
           Add New
         </Button>

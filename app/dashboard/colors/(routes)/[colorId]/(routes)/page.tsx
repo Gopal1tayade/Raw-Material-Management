@@ -35,7 +35,7 @@ const ColorPage: React.FC<ColorPageProps> = async ({ params }) => {
     <DashboardShell>
       <DashboardHeader
         heading="Colors"
-        text="Color your world: Effortlessly customize and manage your color choices here."
+        text="Color: Effortlessly customize and manage your color choices here."
       >
         {params.colorId !== "new" && (
           //   <ColorDeleteButton
