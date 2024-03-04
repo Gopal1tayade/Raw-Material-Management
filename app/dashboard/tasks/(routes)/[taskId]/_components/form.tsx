@@ -59,7 +59,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
   async function onSubmit(values: z.infer<typeof taskCreateSchema>) {
     setIsLoading(true);
 
-    const response = await fetch(`/api/Tasks`, {
+    console.log(values);
+
+    const response = await fetch(`/api/tasks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,11 +73,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
 
     if (!response?.ok) {
       return toast.error("Something went wrong.", {
-        description: "Your Task was not created. Please try again.",
+        description: "Your task was not created. Please try again.",
       });
     }
 
-    const Task = await response.json();
+    const task = await response.json();
 
     // This forces a cache invalidation.
     router.refresh();
@@ -103,13 +105,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Task Title"
+                    placeholder="Quality Check for Processed Rubber"
                     className="max-w-[400px]"
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your Task identification.
+                  Enter a title for the task.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -140,7 +142,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>Choose Your Products</FormDescription>
+                <FormDescription>Select product associated with task.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,7 +184,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>choose priority of the task.</FormDescription>
+                <FormDescription>Select the priority of the task.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -230,7 +232,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>choose priority of the task.</FormDescription>
+                <FormDescription>Select the status of the task.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -273,7 +275,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Your expense data</FormDescription>
+                <FormDescription>Choose the scheduled date and time for the task.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

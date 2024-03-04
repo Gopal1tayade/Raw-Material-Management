@@ -53,10 +53,10 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
     defaultValues: {
       name: process?.name || "",
       description: process?.description || "",
-      duration: process?.duration || 0,
-      temperature: process?.temperature || 0,
-      humidity: process?.humidity || 0,
-      pressure: process?.pressure || 0,
+      duration: process?.duration ? String(process?.duration) : "0",
+      temperature: process?.temperature ? String(process?.temperature) : "0",
+      humidity: process?.humidity ? String(process?.humidity) : "0",
+      pressure: process?.pressure ? String(process?.pressure) : "0",
       status: process?.status || $Enums.Status.TODO,
       productId: process?.productId || "",
       startDate: process?.startDate || new Date(),
@@ -66,7 +66,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
   async function onSubmit(values: z.infer<typeof processCreateSchema>) {
     setIsLoading(true);
 
-    const response = await fetch(`/api/colors`, {
+    const response = await fetch(`/api/processes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,18 +78,18 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
 
     if (!response?.ok) {
       return toast.error("Something went wrong.", {
-        description: "Your color was not created. Please try again.",
+        description: "Your process was not created. Please try again.",
       });
     }
 
-    const color = await response.json();
+    const process = await response.json();
 
     // This forces a cache invalidation.
     router.refresh();
 
-    router.push(`/dashboard/colors`);
+    router.push(`/dashboard/processes`);
 
-    return toast.success("Your color was created.", {
+    return toast.success("Your process was created.", {
       description: "please check your dashboard for further updates.",
     });
   }
@@ -110,12 +110,12 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Process Name"
+                    placeholder="Rubber Processing"
                     className="max-w-[400px]"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your process name.</FormDescription>
+                <FormDescription>Enter the name of the manufacturing process</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -129,13 +129,13 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Process Description"
+                    placeholder=" Advanced process to refine natural rubber"
                     className="max-w-[400px]"
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your process description.
+                  Briefly describe the process
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -179,7 +179,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Your expense data</FormDescription>
+                <FormDescription> Choose the start date of the process.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -221,7 +221,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>You can manage status</FormDescription>
+                <FormDescription>Select the status of the process</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -251,7 +251,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>You can manage products</FormDescription>
+                <FormDescription>Select the product associated with the process.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -267,10 +267,11 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                   <Input
                     placeholder="Color Value"
                     className="max-w-[400px]"
+                    type="number"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense amount.</FormDescription>
+                <FormDescription>Enter the required temperature for the process.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -289,7 +290,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense notes.</FormDescription>
+                <FormDescription>Specify the duration of the process in hours.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -308,7 +309,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense notes.</FormDescription>
+                <FormDescription> Enter the required humidity for the process.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -327,7 +328,7 @@ export const ProcessForm: React.FC<ProcessFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense notes.</FormDescription>
+                <FormDescription> Enter the required pressure for the process.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

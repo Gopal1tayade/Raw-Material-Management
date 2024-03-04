@@ -52,7 +52,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
     resolver: zodResolver(expenseCreateSchema),
     defaultValues: {
       description: expense?.description || "",
-      amount: expense?.amount || 0,
+      amount: expense?.amount ? String(expense?.amount) : "0",
       date: expense?.date || new Date(),
       processId: expense?.processId || "",
       category: expense?.category || $Enums.ExpenseCategory.LABOR,
@@ -63,7 +63,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
   async function onSubmit(values: z.infer<typeof expenseCreateSchema>) {
     setIsLoading(true);
 
-    const response = await fetch(`/api/colors`, {
+    const response = await fetch(`/api/expenses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,18 +75,18 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
     if (!response?.ok) {
       return toast.error("Something went wrong.", {
-        description: "Your color was not created. Please try again.",
+        description: "Your expense was not created. Please try again.",
       });
     }
 
-    const color = await response.json();
+    const expense = await response.json();
 
     // This forces a cache invalidation.
     router.refresh();
 
-    router.push(`/dashboard/colors`);
+    router.push(`/dashboard/expenses`);
 
-    return toast.success("Your color was created.", {
+    return toast.success("Your expense was created.", {
       description: "please check your dashboard for further updates.",
     });
   }
@@ -107,13 +107,13 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Expense Description"
+                    placeholder="Rubber Processing Expenses"
                     className="max-w-[400px]"
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  This is your expense description.
+                  Enter a description of the expense
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -125,15 +125,15 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
             name="amount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Value</FormLabel>
+                <FormLabel>Amount</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Color Value"
+                    placeholder="3000"
                     className="max-w-[400px]"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense amount.</FormDescription>
+                <FormDescription>Specify the amount of the expense.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -152,7 +152,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>This is your expense notes.</FormDescription>
+                <FormDescription>Provide any additional notes related to the expense.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,7 +182,85 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>You can manage colors</FormDescription>
+                <FormDescription>Select the process associated with the expense.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.ExpenseCategory.LABOR}
+                      value={$Enums.ExpenseCategory.LABOR}
+                    >
+                      LABOR
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.ExpenseCategory.EQUIPMENT}
+                      value={$Enums.ExpenseCategory.EQUIPMENT}
+                    >
+                      EQUIPMENT
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.ExpenseCategory.SUPPLIES}
+                      value={$Enums.ExpenseCategory.SUPPLIES}
+                    >
+                      SUPPLIES
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Select the category of the expense</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="paymentStatus"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Payment Status</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a paymentStatus" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.PaymentStatus.PENDING}
+                      value={$Enums.PaymentStatus.PENDING}
+                    >
+                      PENDING
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.PaymentStatus.COMPLETED}
+                      value={$Enums.PaymentStatus.COMPLETED}
+                    >
+                      COMPLETED
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription> Select the payment status.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -225,89 +303,12 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Your expense data</FormDescription>
+                <FormDescription>Pick the date of the expense.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem
-                      key={$Enums.ExpenseCategory.LABOR}
-                      value={$Enums.ExpenseCategory.LABOR}
-                    >
-                      LABOR
-                    </SelectItem>
-                    <SelectItem
-                      key={$Enums.ExpenseCategory.EQUIPMENT}
-                      value={$Enums.ExpenseCategory.EQUIPMENT}
-                    >
-                      EQUIPMENT
-                    </SelectItem>
-                    <SelectItem
-                      key={$Enums.ExpenseCategory.SUPPLIES}
-                      value={$Enums.ExpenseCategory.SUPPLIES}
-                    >
-                      SUPPLIES
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>You can manage colors</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="paymentStatus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Payment Status</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a paymentStatus" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem
-                      key={$Enums.PaymentStatus.PENDING}
-                      value={$Enums.PaymentStatus.PENDING}
-                    >
-                      PENDING
-                    </SelectItem>
-                    <SelectItem
-                      key={$Enums.PaymentStatus.COMPLETED}
-                      value={$Enums.PaymentStatus.COMPLETED}
-                    >
-                      COMPLETED
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>You can manage payment status</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         <Button disabled={isLoading} type="submit" className="w-fit">
           {isLoading ? (

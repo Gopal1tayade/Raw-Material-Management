@@ -20,7 +20,7 @@ export const ProcessClient: React.FC<ExpenseClientProps> = ({ processes }) => {
   return (
     <DashboardShell>
       <DashboardHeader heading="Process" text="Tailor your Process.">
-        <Button onClick={() => router.push(`/dashboard/expenses/new`)}>
+        <Button onClick={() => router.push(`/dashboard/processes/new`)}>
           <Icons.add className="h-4 w-4 mr-2" />
           Add New
         </Button>
