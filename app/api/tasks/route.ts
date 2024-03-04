@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const dbTask = await db.task.create({
       data: {
         userId: user.id,
-        description: payload.description,
+        title: payload.title,
         scheduledAt: payload.scheduledAt,
         productId: payload.productId,
       },
@@ -42,9 +42,9 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     // Get the colors.
-    const dbColors = await db.color.findMany();
+    const dbTasks = await db.color.findMany();
 
-    return NextResponse.json(dbColors, { status: 200 });
+    return NextResponse.json(dbTasks, { status: 200 });
   } catch (error) {
     return new NextResponse(JSON.stringify(error), { status: 500 });
   }
