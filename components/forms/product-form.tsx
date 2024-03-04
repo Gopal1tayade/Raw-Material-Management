@@ -5,7 +5,7 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
+import { Color, Product, $Enums } from "@prisma/client";
 import { DashboardHeader } from "@/components/header";
 import { productCreateSchema } from "@/lib/validations/product";
 import { Button } from "@/components/ui/button";
@@ -20,16 +20,27 @@ import {
   FormMessage,
   useFormField,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
 
 interface ProductFormProps {
   product: Product | null;
+  colors: Color[];
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
+export const ProductForm: React.FC<ProductFormProps> = ({
+  product,
+  colors,
+}) => {
   const mounted = useMounted();
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -39,9 +50,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
     defaultValues: {
       name: product?.name || "",
       description: product?.description || "",
-      color: product?.color || "",
+      colorId: product?.colorId || "",
       weight: String(product?.weight) || "0",
-      unit: product?.unit || "",
+      unit: product?.unit || $Enums.Units.KILOGRAM,
       cost: String(product?.cost) || "0",
       isHazardous: product?.isHazardous || false,
       isRecyclable: product?.isRecyclable || false,
@@ -142,18 +153,34 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
 
           <FormField
             control={form.control}
-            name="color"
+            name="colorId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Color</FormLabel>
-                <FormControl>
-                  <Input placeholder="white" {...field} />
-                </FormControl>
-                <FormDescription>This is your product color.</FormDescription>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a color" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {colors &&
+                      colors.map((color) => (
+                        <SelectItem key={color.id} value={color.id}>
+                          {color.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>You can manage colors</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="weight"
@@ -168,20 +195,43 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="unit"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Unit</FormLabel>
-                <FormControl>
-                  <Input placeholder="kg" {...field} />
-                </FormControl>
-                <FormDescription>This is your unit.</FormDescription>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a color" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.Units.KILOGRAM}
+                      value={$Enums.Units.KILOGRAM}
+                    >
+                      KILOGRAM
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Units.LITER}
+                      value={$Enums.Units.LITER}
+                    >
+                      LITER
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>You can manage colors</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="cost"
@@ -192,12 +242,13 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
                   <Input placeholder="17" type="number" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your product cost per kg.
+                  This is your product cost per kg/Li.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="isHazardous"

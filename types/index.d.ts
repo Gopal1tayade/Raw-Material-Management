@@ -68,6 +68,6 @@ export type DashboardConfig = {
 
 export interface DataTableExtendedProp {
   title: string;
-  filterKey: "name" | "email" | "label";
+  filterKey: "name" | "email" | "label" | "title";
   icon: keyof typeof Icons;
 }

@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/lib/session";
 import { z } from "zod";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { colorSchema, colorEditSchema } from "@/lib/validations/color";
+import { colorEditSchema } from "@/lib/validations/color";
 
 const routeContextSchema = z.object({
   params: z.object({

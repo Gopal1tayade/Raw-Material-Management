@@ -20,11 +20,20 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
     where: {
       id: params.productId,
     },
+    include: {
+      color: true,
+    },
+  });
+
+  const colors = await db.color.findMany({
+    where: {
+      userId: user.id,
+    },
   });
 
   return (
     <DashboardShell>
-      <ProductForm product={product} />
+      <ProductForm product={product} colors={colors} />
     </DashboardShell>
   );
 };
