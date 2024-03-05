@@ -110,49 +110,7 @@ export function UserAddressForm({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-8">
-            <div className="grid grid-cols-2">
-              <FormField
-                control={form.control}
-                name="street"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Street</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="street"
-                        className="w-[400px]"
-                        size={32}
-                        placeholder="Shingnapur , Daryapur"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>This is your street name.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="city"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>City</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="city"
-                        className="w-[400px]"
-                        size={32}
-                        placeholder="Amravati"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      The city where the address is located.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="w-full grid sm:grid-cols-2 gap-8">
               <FormField
                 control={form.control}
                 name="state"
@@ -162,19 +120,63 @@ export function UserAddressForm({
                     <FormControl>
                       <Input
                         id="state"
-                        className="w-[400px]"
                         size={32}
-                        placeholder="Maharashtra"
+                        placeholder="Enter your state"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      The state or region where the address is located.
+                      Select the state where you are located.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City or Locality</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="city"
+                        size={32}
+                        placeholder="Enter your city or locality"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Specify the city or locality within the selected state.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="street"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Street</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="street"
+                        size={32}
+                        placeholder="Enter your street address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Enter your street address, including house/flat number and
+                      any additional details.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="postalCode"
@@ -184,14 +186,13 @@ export function UserAddressForm({
                     <FormControl>
                       <Input
                         id="postalCode"
-                        className="w-[400px]"
                         size={32}
-                        placeholder="444803"
+                        placeholder="Enter your postal code"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      The postal code or ZIP code of the address.
+                      Enter the postal code for accurate delivery.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
