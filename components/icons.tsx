@@ -84,6 +84,7 @@ export const Icons = {
   warning: AlertTriangle,
   user: User,
   arrowRight: ArrowRight,
+  alert: AlertTriangle,
   help: HelpCircle,
   pizza: Pizza,
   sun: SunMedium,

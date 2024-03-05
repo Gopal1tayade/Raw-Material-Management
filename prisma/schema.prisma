@@ -39,6 +39,11 @@ model Session {
   @@map(name: "sessions")
 }
 
+enum UserRole {
+  SUPPLIER
+  ORGANIZATION
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -48,14 +53,14 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   address       Address?
-
-  accounts  Account[]
-  sessions  Session[]
-  tasks     Task[]
-  expenses  Expense[]
-  processes Process[]
-  products  Product[]
-  colors    Color[]
+  role          UserRole  @default(SUPPLIER)
+  accounts      Account[]
+  sessions      Session[]
+  tasks         Task[]
+  expenses      Expense[]
+  processes     Process[]
+  products      Product[]
+  colors        Color[]
 
   @@map(name: "users")
 }

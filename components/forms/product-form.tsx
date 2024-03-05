@@ -148,7 +148,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="High-quality natural rubber for various applications" {...field} />
+                  <Input
+                    placeholder="High-quality natural rubber for various applications"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Provide a brief description of the raw material.
@@ -182,7 +185,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>Select a color associated with the raw material.</FormDescription>
+                <FormDescription>
+                  Select a color associated with the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -197,7 +202,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 <FormControl>
                   <Input placeholder="400" type="number" {...field} />
                 </FormControl>
-                <FormDescription> Specify the weight of the raw material.</FormDescription>
+                <FormDescription>
+                  {" "}
+                  Specify the weight of the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -233,7 +241,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>Select the unit of measurement</FormDescription>
+                <FormDescription>
+                  Select the unit of measurement
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -293,7 +303,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription> Choose the production date of the raw material.</FormDescription>
+                <FormDescription>
+                  {" "}
+                  Choose the production date of the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -336,7 +349,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Pick the expiration date for the raw material.</FormDescription>
+                <FormDescription>
+                  Pick the expiration date for the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -354,9 +369,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel >
-                    Is Hazardas
-                  </FormLabel>
+                  <FormLabel>Is Hazardas</FormLabel>
                   <FormDescription>
                     Check if the raw material is hazardous.
                   </FormDescription>
@@ -376,9 +389,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
-                    Is Recycable
-                  </FormLabel>
+                  <FormLabel>Is Recycable</FormLabel>
                   <FormDescription>
                     Check if the raw material is recyclable.
                   </FormDescription>
@@ -398,9 +409,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
-                    Is Organic
-                  </FormLabel>
+                  <FormLabel>Is Organic</FormLabel>
                   <FormDescription>
                     Check if the raw material is organic.
                   </FormDescription>

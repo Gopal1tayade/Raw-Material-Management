@@ -8,9 +8,9 @@ export const metadata = {
   description: "Manage all processes.",
 };
 
-interface ExpensePageProps { }
+interface ExpensePageProps {}
 
-const ExpensePage: React.FC<ExpensePageProps> = async ({ }) => {
+const ExpensePage: React.FC<ExpensePageProps> = async ({}) => {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -22,7 +22,6 @@ const ExpensePage: React.FC<ExpensePageProps> = async ({ }) => {
       userId: user.id,
     },
   });
-
 
   return <ProcessClient processes={processes} />;
 };

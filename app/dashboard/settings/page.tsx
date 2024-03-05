@@ -7,6 +7,8 @@ import { DashboardShell } from "@/components/shell";
 import { UserNameForm } from "@/components/user-name-form";
 import { UserAddressForm } from "@/components/user-address-form";
 import { db } from "@/lib/db";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 export const metadata = {
   title: "Settings",
   description: "Manage account and website settings.",
@@ -35,16 +37,29 @@ export default async function SettingsPage() {
       },
     },
   });
+
   return (
     <DashboardShell>
       <DashboardHeader
         heading="Settings"
         text="Manage account and website settings."
       />
-      <div className="grid gap-10">
-        <UserNameForm user={{ id: user.id, name: user.name || "" }} />
-        <UserAddressForm user={{ id: user.id, address: dbUser?.address }} />
-      </div>
+      <Tabs defaultValue="account" className="space-y-8">
+        <TabsList className="space-x-4">
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="address">Addresses</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <div className="grid gap-10">
+            <UserNameForm user={{ id: user.id, name: user.name || "" }} />
+          </div>
+        </TabsContent>
+        <TabsContent value="address">
+          <div className="grid gap-10">
+            <UserAddressForm user={{ id: user.id, address: dbUser?.address }} />
+          </div>
+        </TabsContent>
+      </Tabs>
     </DashboardShell>
   );
 }

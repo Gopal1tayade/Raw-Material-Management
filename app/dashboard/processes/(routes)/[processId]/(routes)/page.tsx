@@ -33,7 +33,7 @@ const ProcessPage: React.FC<ProcessPageProps> = async ({ params }) => {
 
   const products = await db.product.findMany({
     where: {
-      userId: user.id
+      userId: user.id,
     },
   });
 

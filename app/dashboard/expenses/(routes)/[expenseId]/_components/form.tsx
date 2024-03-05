@@ -133,7 +133,9 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>Specify the amount of the expense.</FormDescription>
+                <FormDescription>
+                  Specify the amount of the expense.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -152,7 +154,9 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>Provide any additional notes related to the expense.</FormDescription>
+                <FormDescription>
+                  Provide any additional notes related to the expense.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,7 +186,9 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>Select the process associated with the expense.</FormDescription>
+                <FormDescription>
+                  Select the process associated with the expense.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -224,7 +230,9 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>Select the category of the expense</FormDescription>
+                <FormDescription>
+                  Select the category of the expense
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -308,7 +316,6 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
               </FormItem>
             )}
           />
-
         </div>
         <Button disabled={isLoading} type="submit" className="w-fit">
           {isLoading ? (

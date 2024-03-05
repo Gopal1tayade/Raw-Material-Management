@@ -110,9 +110,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription>
-                  Enter a title for the task.
-                </FormDescription>
+                <FormDescription>Enter a title for the task.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -142,7 +140,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                       ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>Select product associated with task.</FormDescription>
+                <FormDescription>
+                  Select product associated with task.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -184,7 +184,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>Select the priority of the task.</FormDescription>
+                <FormDescription>
+                  Select the priority of the task.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -232,7 +234,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>Select the status of the task.</FormDescription>
+                <FormDescription>
+                  Select the status of the task.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -275,7 +279,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, products }) => {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Choose the scheduled date and time for the task.</FormDescription>
+                <FormDescription>
+                  Choose the scheduled date and time for the task.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
