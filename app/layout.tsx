@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { siteConfig } from "@/config/site";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -77,9 +78,11 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {children}
-          <Toaster />
-          <TailwindIndicator />
+          <EdgeStoreProvider>
+            {children}
+            <Toaster />
+            <TailwindIndicator />
+          </EdgeStoreProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -8,6 +8,7 @@ import { UserNameForm } from "@/components/user-name-form";
 import { UserAddressForm } from "@/components/user-address-form";
 import { db } from "@/lib/db";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FileUploader } from "@/components/file-uploader";
 
 export const metadata = {
   title: "Settings",
@@ -48,6 +49,7 @@ export default async function SettingsPage() {
         <TabsList className="space-x-4">
           <TabsTrigger value="account">Account</TabsTrigger>
           <TabsTrigger value="address">Addresses</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
           <div className="grid gap-10">
@@ -58,6 +60,9 @@ export default async function SettingsPage() {
           <div className="grid gap-10">
             <UserAddressForm user={{ id: user.id, address: dbUser?.address }} />
           </div>
+        </TabsContent>
+        <TabsContent value="documents">
+          <FileUploader />
         </TabsContent>
       </Tabs>
     </DashboardShell>
