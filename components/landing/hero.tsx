@@ -9,7 +9,7 @@ import Image from "next/image";
 export const Hero: React.FC = () => {
   return (
     <>
-      <div className="absolute overflow-hidden w-[50%] h-96 rounded-full mx-auto top-40 left-0 right-0">
+      {/* <div className="absolute overflow-hidden w-[50%] h-96 rounded-full mx-auto top-40 left-0 right-0">
         <svg stroke="white" fill="transparent" viewBox="0 0 1600 480">
           <pattern
             id="small-grid"
@@ -36,7 +36,7 @@ export const Hero: React.FC = () => {
             fill="url(#big-grid)"
           />
         </svg>
-      </div>
+      </div> */}
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32 relative">
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
           <Link
@@ -44,7 +44,7 @@ export const Hero: React.FC = () => {
             className="rounded-2xl bg-muted px-4 py-1.5 text-sm font-medium"
             target="_blank"
           >
-            Get a free demo
+            Book a free demo
           </Link>
           <h1
             className="pb-4 font-black tracking-tight text-transparent text-6xl lg:text-7xl  bg-clip-text bg-gradient-to-r from-foreground/60 via-foreground to-foreground/60"

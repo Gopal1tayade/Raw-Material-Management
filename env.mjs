@@ -11,6 +11,8 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().min(0),
     GITHUB_ACCESS_TOKEN: z.string().min(0),
     DATABASE_URL: z.string().min(1),
+    EDGE_STORE_ACCESS_KEY: z.string().min(1),
+    EDGE_STORE_SECRET_KEY: z.string().min(1)
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),
@@ -23,5 +25,7 @@ export const env = createEnv({
     GITHUB_ACCESS_TOKEN: process.env.GITHUB_ACCESS_TOKEN,
     DATABASE_URL: process.env.DATABASE_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    EDGE_STORE_ACCESS_KEY: process.env.EDGE_STORE_ACCESS_KEY,
+    EDGE_STORE_SECRET_KEY: process.env.EDGE_STORE_SECRET_KEY,
   },
 });

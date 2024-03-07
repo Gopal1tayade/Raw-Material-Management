@@ -1,11 +1,11 @@
 import * as React from "react";
 
 export function useMounted() {
-  const [mounted, setMounted] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
 
   React.useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
-  return mounted;
+  return { isMounted };
 }

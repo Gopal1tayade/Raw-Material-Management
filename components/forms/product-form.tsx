@@ -5,7 +5,7 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
+import { Color, Product, $Enums } from "@prisma/client";
 import { DashboardHeader } from "@/components/header";
 import { productCreateSchema } from "@/lib/validations/product";
 import { Button } from "@/components/ui/button";
@@ -20,16 +20,31 @@ import {
   FormMessage,
   useFormField,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { Icons } from "../icons";
+import { Icons } from "@/components/icons";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
 
 interface ProductFormProps {
   product: Product | null;
+  colors: Color[];
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
+export const ProductForm: React.FC<ProductFormProps> = ({
+  product,
+  colors,
+}) => {
   const mounted = useMounted();
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -39,10 +54,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
     defaultValues: {
       name: product?.name || "",
       description: product?.description || "",
-      color: product?.color || "",
+      colorId: product?.colorId || "",
       weight: String(product?.weight) || "0",
-      unit: product?.unit || "",
+      unit: product?.unit || $Enums.Units.KILOGRAM,
       cost: String(product?.cost) || "0",
+      expirationDate: product?.expirationDate || new Date(),
+      productionDate: product?.productionDate || new Date(),
       isHazardous: product?.isHazardous || false,
       isRecyclable: product?.isRecyclable || false,
       isOrganic: product?.isOrganic || false,
@@ -114,26 +131,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="cotton" {...field} />
+                  <Input placeholder="Natural Rubber" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your product display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="the best cotton..." {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your product description.
+                  Enter the name of the raw materia.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -142,18 +143,56 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
 
           <FormField
             control={form.control}
-            name="color"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Color</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="white" {...field} />
+                  <Input
+                    placeholder="High-quality natural rubber for various applications"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>This is your product color.</FormDescription>
+                <FormDescription>
+                  Provide a brief description of the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="colorId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Color</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a color" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {colors &&
+                      colors.map((color) => (
+                        <SelectItem key={color.id} value={color.id}>
+                          {color.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Select a color associated with the raw material.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="weight"
@@ -161,27 +200,55 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
               <FormItem>
                 <FormLabel>Weight</FormLabel>
                 <FormControl>
-                  <Input placeholder="20" type="number" {...field} />
+                  <Input placeholder="400" type="number" {...field} />
                 </FormControl>
-                <FormDescription>This is your product weight.</FormDescription>
+                <FormDescription>
+                  {" "}
+                  Specify the weight of the raw material.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="unit"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Unit</FormLabel>
-                <FormControl>
-                  <Input placeholder="kg" {...field} />
-                </FormControl>
-                <FormDescription>This is your unit.</FormDescription>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a color" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.Units.KILOGRAM}
+                      value={$Enums.Units.KILOGRAM}
+                    >
+                      KILOGRAM
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Units.LITER}
+                      value={$Enums.Units.LITER}
+                    >
+                      LITER
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Select the unit of measurement
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="cost"
@@ -192,26 +259,121 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
                   <Input placeholder="17" type="number" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your product cost per kg.
+                  Enter the cost of the raw material.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="productionDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Production Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  {" "}
+                  Choose the production date of the raw material.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="expirationDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  Pick the expiration date for the raw material.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="isHazardous"
             render={({ field }) => (
-              <FormItem className="flex h-fit self-center items-center space-x-2 border rounded-md p-4">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Is Hazardas
-                </FormLabel>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Is Hazardas</FormLabel>
+                  <FormDescription>
+                    Check if the raw material is hazardous.
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />
@@ -219,16 +381,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
             control={form.control}
             name="isRecyclable"
             render={({ field }) => (
-              <FormItem className="flex h-fit self-center items-center space-x-2 border rounded-md p-4">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Is Recycable
-                </FormLabel>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Is Recycable</FormLabel>
+                  <FormDescription>
+                    Check if the raw material is recyclable.
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />
@@ -236,16 +401,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
             control={form.control}
             name="isOrganic"
             render={({ field }) => (
-              <FormItem className="flex h-fit self-center items-center space-x-2 border rounded-md p-4">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Is Organic
-                </FormLabel>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Is Organic</FormLabel>
+                  <FormDescription>
+                    Check if the raw material is organic.
+                  </FormDescription>
+                </div>
               </FormItem>
             )}
           />

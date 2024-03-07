@@ -12,7 +12,6 @@ export default function DashboardSettingsLoading() {
       />
       <div className="grid gap-10">
         <CardSkeleton />
-        <CardSkeleton />
       </div>
     </DashboardShell>
   );

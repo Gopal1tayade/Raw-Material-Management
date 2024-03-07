@@ -23,10 +23,9 @@ import { Icons } from "@/components/icons";
 
 type ColorFormProps = {
   color: Color | null;
-  storeId: string;
 };
 
-export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
+export const ColorForm: React.FC<ColorFormProps> = ({ color }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -41,7 +40,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
   async function onSubmit(values: z.infer<typeof colorSchema>) {
     setIsLoading(true);
 
-    const response = await fetch(`/api/${storeId}/colors`, {
+    const response = await fetch(`/api/colors`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +61,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
     // This forces a cache invalidation.
     router.refresh();
 
-    router.push(`/${color.storeId}/colors`);
+    router.push(`/dashboard/colors`);
 
     return toast.success("Your color was created.", {
       description: "please check your dashboard for further updates.",
@@ -76,7 +75,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
         action=""
         className="space-y-10"
       >
-        <div className="grid md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <FormField
             control={form.control}
             name="name"
@@ -112,7 +111,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ storeId, color }) => {
                     />
                   </FormControl>
                   <div
-                    className="h-8 w-8 rounded-full border"
+                    className="size-8 rounded-full border"
                     style={{ background: field.value }}
                   />
                 </div>

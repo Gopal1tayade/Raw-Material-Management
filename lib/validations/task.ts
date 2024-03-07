@@ -1,7 +1,18 @@
 import * as z from "zod";
+import { $Enums } from "@prisma/client";
 
 export const taskCreateSchema = z.object({
-  description: z.string().min(3).max(120),
-  scheduledAt: z.date(),
+  title: z.string().min(3).max(120),
+  scheduledAt: z.coerce.date(),
   productId: z.string().min(1).max(32),
+  status: z.nativeEnum($Enums.Status),
+  priority: z.nativeEnum($Enums.Priority),
+});
+
+export const taskEditSchema = z.object({
+  title: z.string().min(3).max(120).optional(),
+  scheduledAt: z.coerce.date().optional(),
+  productId: z.string().min(1).max(32).optional(),
+  status: z.nativeEnum($Enums.Status),
+  priority: z.nativeEnum($Enums.Priority),
 });

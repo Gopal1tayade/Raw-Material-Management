@@ -55,7 +55,6 @@ export const Testimonials = () => {
           plugins={[
             Autoplay({
               delay: 10000,
-              stop,
             }),
           ]}
           opts={{

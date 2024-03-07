@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product, Task } from "@prisma/client";
+import { $Enums, Product, Task } from "@prisma/client";
 import { DashboardHeader } from "@/components/header";
 import { taskCreateSchema } from "@/lib/validations/task";
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,8 @@ export const TaskForm: React.FC<ProductFormProps> = ({ task, products }) => {
       description: task?.description || "",
       scheduledAt: task?.scheduledAt,
       productId: task?.productId || "",
+      status: task?.status || $Enums.Status.TODO,
+      priority: task?.priority || $Enums.Priority.LOW,
     },
   });
 
@@ -200,6 +202,90 @@ export const TaskForm: React.FC<ProductFormProps> = ({ task, products }) => {
                 <FormDescription>
                   You can manage email addresses in your
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Status</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.Status.TODO}
+                      value={$Enums.Status.TODO}
+                    >
+                      TODO
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Status.IN_PROGRESS}
+                      value={$Enums.Status.IN_PROGRESS}
+                    >
+                      IN_PROGRESS
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Status.DONE}
+                      value={$Enums.Status.DONE}
+                    >
+                      DONE
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>You can manage status</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="priority"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Privority</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a Privority" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem
+                      key={$Enums.Priority.LOW}
+                      value={$Enums.Priority.LOW}
+                    >
+                      LOW
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Priority.MEDIUM}
+                      value={$Enums.Priority.MEDIUM}
+                    >
+                      MEDIUM
+                    </SelectItem>
+                    <SelectItem
+                      key={$Enums.Priority.HIGH}
+                      value={$Enums.Priority.HIGH}
+                    >
+                      HIGH
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>You can manage privority</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

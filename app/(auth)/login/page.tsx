@@ -35,6 +35,7 @@ export default function LoginPage() {
           Back
         </>
       </Link>
+
       <Card className="md:w-96">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">Welcome back</CardTitle>

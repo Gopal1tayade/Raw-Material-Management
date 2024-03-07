@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const {
       name,
       description,
-      color,
+      colorId,
       weight,
       unit,
       cost,
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
         name,
         userId: session.user.id,
         description,
-        color,
+        colorId,
         weight: Number(weight),
         unit,
         cost: Number(cost),
